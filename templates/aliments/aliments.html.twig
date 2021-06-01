@@ -4,10 +4,12 @@
 
 {% block navbar %}{% endblock %}
 
-{% block monTitre %}Liste des aliments{% if isCalorie %} avec moins de 50 calories.{% endif %}{% endblock %}
+{% block monTitre %}Liste des aliments
+    {% if isCalorie %} avec moins de 50 calories.{% elseif isGlucide %} avec moins de 5 glucides.{% endif %}{% endblock %}
 
 {% block body %}
-<a href="{{path('alimentsParCalorie', {"calorie":50}) }}" class="m-1">Aliment avec moins de 50 cal/100g.</a>
+<a href="{{path('alimentsParCalorie', {"calorie":50}) }}" class="btn btn-primary m-1">Aliment avec moins de 50 cal/100g.</a>
+<a href="{{path('alimentsParGlucide', {"glucide":5}) }}" class="btn btn-primary m-1">Aliment avec moins de 5 glucides/100g.</a>
     <div class="row">
         {% for aliment in aliments %}
             <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
