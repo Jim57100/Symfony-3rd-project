@@ -4,7 +4,13 @@
 
 {# {% block navbar %}{% endblock %} #}
 
-{% block monTitre %}Modification {{aliment.nom }}{% endblock %}
+{% block monTitre %}
+    {% if isModification %}
+        Modification {{aliment.nom }}
+    {% else %}
+        Ajout d'un aliment
+    {% endif %}
+{% endblock %}
 
 {% block body %}
 {{form_start(form)}}

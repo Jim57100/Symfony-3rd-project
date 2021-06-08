@@ -7,7 +7,7 @@
 {% block monTitre %}Page d'administration{% endblock %}
 
 {% block body %}
-<a class="btn btn-success m-1" href="#">Ajouter</a>
+<a class="btn btn-success m-1" href="{{path('admin_aliment_creation')}}">Ajouter</a>
 <table class="table m-1">
     <thead>
         <tr>
@@ -32,8 +32,14 @@
                 <td>{{aliment.proteine}}</td>
                 <td>{{aliment.glucide}}</td>
                 <td>{{aliment.lipides}}</td>
-                <td><a class="btn btn-success" href="{{ path('admin_aliment_modification', {'id': aliment.id}) }}">Modifier</a></td>
-                <td><a class="btn btn-danger" href="#">Supprimer</a></td>
+                <td>
+                    <a class="btn btn-success" href="{{ path('admin_aliment_modification', {'id': aliment.id}) }}">Modifier</a>
+                    <form method="POST" action="{{path('admin_aliment_supression', {'id': aliment.id}) }}" onsubmit="return  confirm('Ok ?')" style="display: inline-block">
+                        <input type="hidden" name="_method" value="delete">
+                        <input type="submit" class="btn btn-danger" value="supprimer">
+                        <input type="hidden" name="_token" value="{{csrf_token('SUP' ~ aliment.id)}}"> 
+                    </form>
+                </td>
             </tr>
         {% endfor %}
     </tbody>
