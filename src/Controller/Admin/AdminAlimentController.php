@@ -33,27 +33,43 @@ class AdminAlimentController extends AbstractController
             $aliment = new Aliments();
         }
         
+        //CREATE
         $form = $this->createForm(AlimentType::class, $aliment);
         $form->handleRequest($request);
+        //on vérifie que le formulaire est soumis et ok
         if($form->isSubmitted() && $form->isValid()) {
+            //on envoi les nouvelles données dans la bdd
             $entityManager->persist($aliment);
             $entityManager->flush();
+            //On vérifie que l'on est pas dans le cas d'une création
+            $modif = $aliment->getId() !== null;
+            //message de validation
+            $this->addFlash("success", ($modif) ? "La modification a bien été effectuée" : "L'ajout a bien été effectué");
+            //redirection à la fin de la création/modification
             return $this-> redirectToRoute('admin_aliment');
         }
+        
+        //UPDATE
         return $this->render('admin/admin_aliment/modifEtAjout.html.twig',[
+            //On vérifie que l'on est pas dans le cas d'une création (id diff. de 0)
+            "isModification" => $aliment->getId() !== null,
+            //on va chercher les données
             "aliment" => $aliment,
-            "form" =>  $form->createView(),
-            "isModification" => $aliment->getId() !== null
+            //on affiche le formulaire avec les données à modifier
+            "form" =>  $form->createView()
         ]);
     }
-      /**
-     * @Route("/admin/aliment/{id}", name="admin_aliment_supression", methods="delete")
-     */
+
+    // DELETE
+        /**
+        * @Route("/admin/aliment/{id}", name="admin_aliment_supression", methods="delete")
+        */
     public function supression(Aliments $aliment, Request $request, EntityManagerInterface $entityManager): Response
     {
     if($this->isCsrfTokenValid("SUP". $aliment->getId(),$request->get('_token'))){
         $entityManager->remove($aliment);
         $entityManager->flush();
+        $this->addFlash("success", "La suppression a bien été effectuée");
         return $this-> redirectToRoute('admin_aliment');
     }
     }
