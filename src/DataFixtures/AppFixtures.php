@@ -18,6 +18,7 @@ class AppFixtures extends Fixture
             -> setProteine(0.77)
             -> setGlucide(6.45)
             -> setLipides(0.26);
+        $a1 -> setUpdatedAt(new \DateTime('now'));
         $manager->persist($a1);
 
         $a2 = new Aliments();

@@ -29,7 +29,7 @@
     <tbody>
         {% for aliment in aliments %}
             <tr>
-                <td scope="row"><img src="{{asset('images/' ~ aliment.image)}}" class="adminImg"></td>
+                <td scope="row"><img src="{{asset('images/aliments/' ~ aliment.image)}}" class="adminImg"></td>
                 <td><strong>{{aliment.nom}}</strong></td>
                 <td>{{aliment.prix}}</td>
                 <td>{{aliment.calories}}</td>
