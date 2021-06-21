@@ -2,19 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\TypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=TypeRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\TypeRepository")
  */
 class Type
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -30,7 +29,7 @@ class Type
     private $image;
 
     /**
-     * @ORM\OneToMany(targetEntity=Aliments::class, mappedBy="type")
+     * @ORM\OneToMany(targetEntity="App\Entity\Aliment", mappedBy="type")
      */
     private $aliments;
 
@@ -69,14 +68,14 @@ class Type
     }
 
     /**
-     * @return Collection|Aliments[]
+     * @return Collection|Aliment[]
      */
     public function getAliments(): Collection
     {
         return $this->aliments;
     }
 
-    public function addAliment(Aliments $aliment): self
+    public function addAliment(Aliment $aliment): self
     {
         if (!$this->aliments->contains($aliment)) {
             $this->aliments[] = $aliment;
@@ -86,9 +85,10 @@ class Type
         return $this;
     }
 
-    public function removeAliment(Aliments $aliment): self
+    public function removeAliment(Aliment $aliment): self
     {
-        if ($this->aliments->removeElement($aliment)) {
+        if ($this->aliments->contains($aliment)) {
+            $this->aliments->removeElement($aliment);
             // set the owning side to null (unless already changed)
             if ($aliment->getType() === $this) {
                 $aliment->setType(null);

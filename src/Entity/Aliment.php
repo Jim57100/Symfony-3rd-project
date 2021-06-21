@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-// use App\Repository\AlimentsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -10,27 +9,27 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\AlimentsRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\AlimentRepository")
  * @Vich\Uploadable
  */
-class Aliments
+class Aliment
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min=3, max=15, minMessage="3 charactères minimum", maxMessage="15 charactères max")
+     * @Assert\Length(min=3,max=15,minMessage="le nom doit faire 3 caractères minimum", maxMessage="Le nom doit faire moins de 15 caractères")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="float")
-     * @Assert\Range(min=0.1, max=100)
+     * @Assert\Range(min=0.1, max=100, minMessage="Le prix doit être supérieur à 0.1", maxMessage="Le prix doit être inférieur à 100")
      */
     private $prix;
 
@@ -40,16 +39,29 @@ class Aliments
     private $image;
 
     /**
-     * 
-     * @Vich\UploadableField(mapping="aliment_image", fileNameProperty="image")
-     * 
-     */
+    * @Vich\UploadableField(mapping="aliment_image", fileNameProperty="image")
+    */
     private $imageFile;
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageFile(?File $imageFile = null): self
+    {
+        $this->imageFile = $imageFile;
+
+        if($this->imageFile instanceof UploadedFile){
+            $this->updated_at = new \DateTime('now');
+        }
+        return $this;
+    }
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $calories;
+    private $calorie;
 
     /**
      * @ORM\Column(type="float")
@@ -64,7 +76,7 @@ class Aliments
     /**
      * @ORM\Column(type="float")
      */
-    private $lipides;
+    private $lipide;
 
     /**
      * @ORM\Column(type="datetime")
@@ -72,7 +84,7 @@ class Aliments
     private $updated_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Type::class, inversedBy="aliments")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Type", inversedBy="aliments")
      */
     private $type;
 
@@ -117,30 +129,14 @@ class Aliments
         return $this;
     }
 
-    public function getImageFile(): ?File
+    public function getCalorie(): ?int
     {
-        return $this->imageFile;
+        return $this->calorie;
     }
 
-    public function setImageFile(?File $imageFile = null): self
+    public function setCalorie(int $calorie): self
     {
-        $this->imageFile = $imageFile;
-        return $this;
-
-        if ($this->imageFile instanceof uploadedFile){
-            $this->updated_at = new \DateTime('now');
-        }
-        return $this;
-    }
-
-    public function getCalories(): ?int
-    {
-        return $this->calories;
-    }
-
-    public function setCalories(int $calories): self
-    {
-        $this->calories = $calories;
+        $this->calorie = $calorie;
 
         return $this;
     }
@@ -169,14 +165,14 @@ class Aliments
         return $this;
     }
 
-    public function getLipides(): ?float
+    public function getLipide(): ?float
     {
-        return $this->lipides;
+        return $this->lipide;
     }
 
-    public function setLipides(float $lipides): self
+    public function setLipide(float $lipide): self
     {
-        $this->lipides = $lipides;
+        $this->lipide = $lipide;
 
         return $this;
     }
