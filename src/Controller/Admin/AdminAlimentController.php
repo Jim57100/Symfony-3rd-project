@@ -55,10 +55,10 @@ class AdminAlimentController extends AbstractController
      * @Route("/admin/aliment/{id}", name="admin_aliment_suppression", methods="delete")
      */
     public function suppression(Aliment $aliment, Request $request, ObjectManager $objectManager){
-        if($this->isCsrfTokenValid("SUP". $aliment->getId(),$request->get('_token'))){
+        if($this->isCsrfTokenValid("SUP".$aliment->getId(), $request->get('_token'))){
             $objectManager->remove($aliment);
             $objectManager->flush();
-            $this->addFlash("success","La suppression a été effectuée");
+            $this->addFlash("success", "La suppression a été effectuée");
             return $this->redirectToRoute("admin_aliment");
         }
     }

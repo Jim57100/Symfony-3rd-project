@@ -2,12 +2,16 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TypeRepository")
+ * @Vich\Uploadable
  */
 class Type
 {
@@ -29,9 +33,19 @@ class Type
     private $image;
 
     /**
+    * @Vich\UploadableField(mapping="type_image", fileNameProperty="image")
+    */
+    private $imageFile;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Aliment", mappedBy="type")
      */
     private $aliments;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
 
     public function __construct()
     {
@@ -60,7 +74,7 @@ class Type
         return $this->image;
     }
 
-    public function setImage(string $image): self
+    public function setImage(?string $image): self
     {
         $this->image = $image;
 
@@ -95,6 +109,33 @@ class Type
             }
         }
 
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageFile(?File $imageFile = null): self
+    {
+        $this->imageFile = $imageFile;
+
+        if($this->imageFile instanceof UploadedFile){
+            $this->createdAt = new \DateTime('now');
+        }
         return $this;
     }
 }

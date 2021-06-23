@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Types{% endblock %}
+
+{% block monTitre %}
+Liste de tous les types
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    {% for type in lesTypes %}
+    <div class="col-12 m-2">
+        <div class="row align-items-center">
+            <div class="col-sm-12 col-md-4">
+                <img src="{{asset('images/types/' ~ type.image) }}" class="img-fluid rounded-circle" alt="">
+            </div>
+            <div class="col-sm-12 col-md-8">
+                {{ type.libelle }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
