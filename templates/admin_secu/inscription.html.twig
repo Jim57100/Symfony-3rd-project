@@ -14,6 +14,23 @@
         },
         "label" : "Votre login"
     })}}
+    {{ form_row(form.password, {
+        "attr" : {
+            "placeholder": "Saisir votre mot de passe"
+
+        },
+        "label" : "Votre mot de passe"
+    })}}
+    {{ form_row(form.verificationPassword, {
+        "attr" : {
+            "placeholder": "Saisir à nouveau votre mot de passe"
+
+        },
+        "label" : "Vérification du mot de passe"
+    })}}
+
+
+
         {{ form_widget(form) }}
         <input type="submit" class="btn btn-primary" value="Valider">
 {{ form_end(form) }}
